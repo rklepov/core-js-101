@@ -99,20 +99,19 @@ function getFastestPromise(array) {
  *
  */
 function chainPromises(array, action) {
-  const results = [];
-
   // prettier-ignore
-  return array
-    .reduce((a, p) => a
-      .then((x) => {
-        results.push(x);
-        return p;
-      })
-      .catch(() => p))
-    .then((x) => {
-      results.push(x);
-      return Promise.resolve(results.reduce(action));
-    });
+  return array.reduceRight(
+    (f, p) => async (a) => {
+      try {
+        const r = [...a];
+        r.push(await p);
+        return f(r);
+      } catch (e) {
+        return f(a);
+      }
+    },
+    (a) => Promise.resolve(a.reduce(action)),
+  )([]);
 }
 
 module.exports = {
