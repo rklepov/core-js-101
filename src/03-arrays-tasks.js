@@ -465,13 +465,11 @@ function sortCitiesArray(arr) {
  */
 function getIdentityMatrix(n) {
   // prettier-ignore
-  return (
-    Array(n)
+  return Array(n)
+    .fill(0)
+    .map((x, i) => Array(n)
       .fill(0)
-      .map((x, i) => Array(n)
-        .fill(0)
-        .map((y, j) => +(i === j)))
-  );
+      .map((y, j) => +(i === j)));
 }
 
 /**
