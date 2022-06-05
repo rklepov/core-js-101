@@ -100,18 +100,22 @@ function getFastestPromise(array) {
  */
 function chainPromises(array, action) {
   // prettier-ignore
-  return array.reduceRight(
-    (f, p) => async (a) => {
-      try {
-        const r = [...a];
-        r.push(await p);
-        return f(r);
-      } catch (e) {
-        return f(a);
-      }
-    },
-    (a) => Promise.resolve(a.reduce(action)),
-  )([]);
+  return new Promise((resolve) => {
+    resolve(
+      array.reduceRight(
+        (f, p) => async (a) => {
+          try {
+            const r = [...a];
+            r.push(await p);
+            return f(r);
+          } catch (e) {
+            return f(a);
+          }
+        },
+        (a) => a.reduce(action),
+      )([]),
+    );
+  });
 }
 
 module.exports = {
