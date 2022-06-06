@@ -121,6 +121,7 @@ function fromJSON(proto, json) {
  */
 
 /* eslint max-classes-per-file: ["error", 9] */
+
 class SelectorItem {
   constructor(value) {
     this.value = value;
@@ -160,11 +161,13 @@ class Attr extends SelectorItem {
     return `[${super.stringify()}]`;
   }
 }
+
 class PseudoClass extends SelectorItem {
   stringify() {
     return `:${super.stringify()}`;
   }
 }
+
 class PseudoElement extends SelectorItem {
   stringify() {
     return `::${super.stringify()}`;
